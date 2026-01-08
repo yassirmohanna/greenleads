@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GreenLeads - <%= title %></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/public/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="/public/logo.png" alt="GreenLeads logo" class="logo" />
+      <span>GreenLeads</span>
+    </div>
+    <nav>
+      <% if (typeof currentUser !== 'undefined') { %>
+        <a href="/leads">Leads</a>
+        <a href="/import">Import</a>
+        <a href="/settings">Settings</a>
+        <a href="/support">Support</a>
+        <% if (currentUser.role === 'OWNER') { %>
+          <a href="/admin/invites">Invites</a>
+        <% } %>
+        <form method="post" action="/logout" class="inline">
+          <button type="submit" class="ghost">Logout</button>
+        </form>
+      <% } else { %>
+        <a href="/login">Login</a>
+        <a href="/support">Support</a>
+      <% } %>
+    </nav>
+  </header>
+  <main class="container">
