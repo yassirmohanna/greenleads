@@ -1,0 +1,32 @@
+<%- include('partials/header', { title: 'Lead Detail' }) %>
+
+<section class="detail">
+  <h1><%- lead.highlightedTitle %></h1>
+  <p class="muted">Received <%= new Date(lead.receivedAt).toLocaleString() %></p>
+  <div class="card">
+    <p><strong>City:</strong> <%= lead.city || '-' %></p>
+    <p><strong>Category:</strong> <%= lead.category %></p>
+    <p><strong>Score:</strong> <%= lead.score %></p>
+    <p><strong>Status:</strong> <%= lead.status %></p>
+    <div class="badges">
+      <span class="badge"><%= lead.category %></span>
+      <% (lead.matchedKeywords || []).forEach((word) => { %>
+        <span class="badge muted"><%= word %></span>
+      <% }) %>
+    </div>
+    <p><strong>Snippet:</strong> <%- lead.highlightedSnippet %></p>
+    <p><strong>Post:</strong> <a href="<%= lead.postUrl %>" target="_blank">Open Nextdoor</a></p>
+  </div>
+
+  <form method="post" action="/leads/<%= lead.id %>/status" class="card">
+    <label>Update status</label>
+    <select name="status">
+      <% ['NEW','CONTACTED','WON','LOST','IGNORED'].forEach((s) => { %>
+        <option value="<%= s %>" <%= lead.status === s ? 'selected' : '' %>><%= s %></option>
+      <% }) %>
+    </select>
+    <button type="submit">Save</button>
+  </form>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,54 @@
+<%- include('partials/header', { title: 'Settings' }) %>
+
+<h1>Settings</h1>
+<form method="post" class="card">
+  <h2>Scoring</h2>
+  <label>Score threshold</label>
+  <input type="number" name="threshold" value="<%= settings.threshold %>" min="0" />
+
+  <label>Landscaping strong keywords</label>
+  <textarea name="landscapingStrong"><%= settings.keywordConfig.landscaping.strong.join('\n') %></textarea>
+
+  <label>Landscaping weak keywords</label>
+  <textarea name="landscapingWeak"><%= settings.keywordConfig.landscaping.weak.join('\n') %></textarea>
+
+  <label>Install strong keywords</label>
+  <textarea name="installStrong"><%= settings.keywordConfig.install.strong.join('\n') %></textarea>
+
+  <label>Install weak keywords</label>
+  <textarea name="installWeak"><%= settings.keywordConfig.install.weak.join('\n') %></textarea>
+
+  <label>Negative keywords</label>
+  <textarea name="negativeKeywords"><%= settings.keywordConfig.negative.join('\n') %></textarea>
+
+  <h2>Geography</h2>
+  <label>City list (one per line)</label>
+  <textarea name="cityList"><%= settings.cityList.join('\n') %></textarea>
+
+  <h2>Notifications</h2>
+  <label>SMS targets</label>
+  <textarea name="smsTargets"><%= settings.smsTargets.join('\n') %></textarea>
+
+  <label>Email targets</label>
+  <textarea name="emailTargets"><%= settings.emailTargets.join('\n') %></textarea>
+
+  <h2>Worker</h2>
+  <label>Poll interval (minutes)</label>
+  <input type="number" name="pollIntervalMinutes" value="<%= settings.pollIntervalMinutes %>" min="1" />
+
+  <label>Rate limit per hour</label>
+  <input type="number" name="rateLimitPerHour" value="<%= settings.rateLimitPerHour %>" min="1" />
+
+  <label class="checkbox">
+    <input type="checkbox" name="storeRawEmail" <%= settings.storeRawEmail ? 'checked' : '' %> />
+    Store parsed email text (admin only)
+  </label>
+
+  <h2>Email Ingestion</h2>
+  <p class="muted">Status: <strong><%= ingestionEnabled ? 'Enabled' : 'Disabled' %></strong></p>
+  <p class="muted">To enable, set <code>INGESTION_ENABLED=true</code> and configure IMAP or Gmail OAuth in <code>.env</code>.</p>
+
+  <button type="submit">Save settings</button>
+</form>
+
+<%- include('partials/footer') %>

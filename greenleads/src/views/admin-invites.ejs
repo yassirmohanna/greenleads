@@ -1,0 +1,92 @@
+<%- include('partials/header', { title: 'Invites' }) %>
+
+<h1>Invites</h1>
+<p class="muted">Create private invite links to grant access. You can revoke access at any time.</p>
+
+<form method="post" action="/admin/invites" class="card">
+  <label>Invite email (optional)</label>
+  <input type="email" name="email" placeholder="leave blank for open invite" />
+  <button type="submit">Create invite</button>
+</form>
+
+<div class="card">
+  <h2>Active invites</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Invite</th>
+        <th>Email</th>
+        <th>Created</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (invites.length === 0) { %>
+        <tr><td colspan="5" class="muted">No invites yet.</td></tr>
+      <% } %>
+      <% invites.forEach((invite) => { %>
+        <tr>
+          <td>
+            <code><%= `${baseUrl}/signup?token=${invite.token}` %></code>
+            <button type="button" class="ghost" data-copy-link="<%= `${baseUrl}/signup?token=${invite.token}` %>">Copy link</button>
+          </td>
+          <td><%= invite.email || '-' %></td>
+          <td><%= new Date(invite.createdAt).toLocaleString() %></td>
+          <td>
+            <% if (invite.revokedAt) { %>
+              Revoked
+            <% } else if (invite.usedAt) { %>
+              Used
+            <% } else { %>
+              Active
+            <% } %>
+          </td>
+          <td>
+            <% if (!invite.revokedAt && !invite.usedAt) { %>
+              <form method="post" action="/admin/invites/<%= invite.token %>/revoke">
+                <button type="submit" class="ghost">Revoke</button>
+              </form>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h2>Users</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (users.length === 0) { %>
+        <tr><td colspan="4" class="muted">No users.</td></tr>
+      <% } %>
+      <% users.forEach((user) => { %>
+        <tr>
+          <td><%= user.email %></td>
+          <td><%= user.role %></td>
+          <td><%= user.active ? 'Active' : 'Inactive' %></td>
+          <td>
+            <% if (user.role !== 'OWNER') { %>
+              <form method="post" action="/admin/users/<%= user.id %>/toggle">
+                <button type="submit" class="ghost"><%= user.active ? 'Deactivate' : 'Activate' %></button>
+              </form>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('partials/footer') %>
+<script src="/public/admin.js"></script>

@@ -1,0 +1,66 @@
+{
+  "threshold": 3,
+  "pollIntervalMinutes": 3,
+  "rateLimitPerHour": 10,
+  "storeRawEmail": false,
+  "cityList": [
+    "Aurora",
+    "Centennial",
+    "Denver",
+    "Lakewood",
+    "Commerce City",
+    "Thornton",
+    "Westminster"
+  ],
+  "keywordConfig": {
+    "landscaping": {
+      "strong": [
+        "landscaping",
+        "xeriscape",
+        "irrigation",
+        "sprinkler",
+        "tree trimming",
+        "pavers"
+      ],
+      "weak": [
+        "lawn",
+        "yard",
+        "mow",
+        "mowing",
+        "sod",
+        "mulch",
+        "rocks",
+        "weeds",
+        "fence repair",
+        "cleanup"
+      ]
+    },
+    "install": {
+      "strong": [
+        "install unit",
+        "installation",
+        "hvac",
+        "mini split",
+        "furnace",
+        "water heater",
+        "appliance install"
+      ],
+      "weak": [
+        "ac",
+        "thermostat",
+        "dryer install",
+        "washer install"
+      ]
+    },
+    "negative": [
+      "for sale",
+      "lost pet",
+      "missing dog",
+      "missing cat",
+      "found pet",
+      "free"
+    ]
+  },
+  "smsTargets": [],
+  "emailTargets": []
+}
