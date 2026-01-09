@@ -1,0 +1,74 @@
+<%- include('partials/header', { title: 'Leads' }) %>
+
+<section class="toolbar">
+  <h1>Leads</h1>
+  <form method="get" class="filters">
+    <select name="status">
+      <option value="">All statuses</option>
+      <% ['NEW','CONTACTED','WON','LOST','IGNORED'].forEach((s) => { %>
+        <option value="<%= s %>" <%= String(filters.status || '') === s ? 'selected' : '' %>><%= s %></option>
+      <% }) %>
+    </select>
+    <select name="category">
+      <option value="">All categories</option>
+      <% ['LANDSCAPING','INSTALL','UNKNOWN'].forEach((c) => { %>
+        <option value="<%= c %>" <%= String(filters.category || '') === c ? 'selected' : '' %>><%= c %></option>
+      <% }) %>
+    </select>
+    <select name="city">
+      <option value="">All cities</option>
+      <% settings.cityList.forEach((city) => { %>
+        <option value="<%= city %>" <%= String(filters.city || '') === city ? 'selected' : '' %>><%= city %></option>
+      <% }) %>
+    </select>
+    <select name="sort">
+      <option value="newest" <%= String(filters.sort || '') === '' || String(filters.sort || '') === 'newest' ? 'selected' : '' %>>Newest</option>
+      <option value="score" <%= String(filters.sort || '') === 'score' ? 'selected' : '' %>>Score</option>
+      <option value="city" <%= String(filters.sort || '') === 'city' ? 'selected' : '' %>>City</option>
+    </select>
+    <button type="submit">Apply</button>
+  </form>
+</section>
+
+<div class="card">
+  <p class="muted">No email ingestion? Use the Import page to paste a Nextdoor email and create a lead.</p>
+  <a href="/import"><button type="button">Go to Import</button></a>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>City</th>
+      <th>Category</th>
+      <th>Score</th>
+      <th>Status</th>
+      <th>Received</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (leads.length === 0) { %>
+      <tr><td colspan="6" class="muted">No leads yet.</td></tr>
+    <% } %>
+    <% leads.forEach((lead) => { %>
+      <tr>
+        <td>
+          <a href="/leads/<%= lead.id %>"><%- lead.highlightedTitle %></a>
+          <div class="badges">
+            <span class="badge"><%= lead.category %></span>
+            <% (lead.matchedKeywords || []).forEach((word) => { %>
+              <span class="badge muted"><%= word %></span>
+            <% }) %>
+          </div>
+        </td>
+        <td><%= lead.city || '-' %></td>
+        <td><%= lead.category %></td>
+        <td><%= lead.score %></td>
+        <td><%= lead.status %></td>
+        <td><%= new Date(lead.receivedAt).toLocaleString() %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('partials/footer') %>
