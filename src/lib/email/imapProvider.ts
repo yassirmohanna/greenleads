@@ -30,6 +30,8 @@
         host: this.config.host,
         port: this.config.port,
         secure: this.config.secure,
+        auth: {
+          user: this.config.user,
           pass: this.config.password
         }
       });
@@ -46,6 +48,8 @@
         }
 
         const uids = await client.search(query);
+        const messages: RawEmail[] = [];
+
         if (!uids || uids.length === 0) {
           return messages;
         }
