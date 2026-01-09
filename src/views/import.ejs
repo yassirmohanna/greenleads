@@ -1,25 +1,44 @@
-<%- include('partials/header', { title: 'Import' }) %>
+ <%- include('partials/header', { title: 'Import' }) %>
 
-<h1>Import Nextdoor Email</h1>
-<p class="muted">Paste a raw Nextdoor email (RFC 822 format). This keeps the workflow compliant and avoids any scraping.</p>
+  <h1>Import Nextdoor Email</h1>
+  <p class="muted">Paste a raw Nextdoor email (RFC 822 format). This keeps the workflow compliant and avoids any scraping.</p>
 
-<% if (error) { %>
-  <div class="alert"><%= error %></div>
-<% } %>
-<% if (success) { %>
-  <div class="card"><%= success %></div>
-<% } %>
+  <% if (error) { %>
+    <div class="alert"><%= error %></div>
+  <% } %>
+  <% if (success) { %>
+    <div class="card"><%= success %></div>
+  <% } %>
 
-<form method="post" class="card">
-  <label>Raw email</label>
-  <textarea name="rawEmail" placeholder="Paste raw email content here"></textarea>
-  <button type="submit">Import</button>
-</form>
+  <form method="post" class="card">
+    <label>Raw email</label>
+    <textarea name="rawEmail" placeholder="Paste raw email content here"></textarea>
+    <button type="submit">Import</button>
+  </form>
 
-<div class="card">
-  <h2>Current threshold</h2>
-  <p>Score threshold: <strong><%= settings.threshold %></strong></p>
-  <p>City list: <%= settings.cityList.join(', ') %></p>
-</div>
+  <h2>Manual lead (simple)</h2>
+  <p class="muted">Use this if you don’t have the raw email source. Provide the post link and basic details.</p>
+  <form method="post" action="/import/manual" class="card">
+    <label>Post URL (Nextdoor)</label>
+    <input type="url" name="postUrl" placeholder="https://nextdoor.com/p/..." required />
+    <label>Title</label>
+    <input type="text" name="title" placeholder="Short title" />
+    <label>Snippet</label>
+    <textarea name="snippet" placeholder="Short description"></textarea>
+    <label>City</label>
+    <select name="city" required>
+      <option value="">Select city</option>
+      <% settings.cityList.forEach((city) => { %>
+        <option value="<%= city %>"><%= city %></option>
+      <% }) %>
+    </select>
+    <button type="submit">Add lead</button>
+  </form>
 
-<%- include('partials/footer') %>
+  <div class="card">
+    <h2>Current threshold</h2>
+    <p>Score threshold: <strong><%= settings.threshold %></strong></p>
+    <p>City list: <%= settings.cityList.join(', ') %></p>
+  </div>
+
+  <%- include('partials/footer') %>
